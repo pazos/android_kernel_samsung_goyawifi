@@ -228,7 +228,7 @@ static struct bt532_ts_platform_data bt532_ts_pdata = {
 	.x_resolution	= 599,
 	.y_resolution	= 1023,
 	.page_size	= 128,
-	.orientation	= 0,
+	.orientation	= CONFIG_TOUCHSCREEN_BT532_TS_ORIENTATION,
 };
 
 static struct i2c_board_info __initdata bt532_i2c_devices[] = {

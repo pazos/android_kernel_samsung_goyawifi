@@ -930,6 +930,15 @@ config TOUCHSCREEN_BT532_TS
 
 	  If unsure, say N.	  
 
+config TOUCHSCREEN_BT532_TS_ORIENTATION
+	int "ZINITIX BT532 touchscreen driver orientation"
+	depends on TOUCHSCREEN_BT532_TS
+	default "0"
+	help
+	  ZINITIX BT532 touchscreen driver orientation.
+	     0: portrait
+	     6: landscape
+
 config TOUCHSCREEN_CYPRESS_TMA46X
 	tristate "CYPRESS TMA46X I2C Touchscreen"
 	depends on I2C
