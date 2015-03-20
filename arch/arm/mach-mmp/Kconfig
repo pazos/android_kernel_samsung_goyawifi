@@ -447,6 +447,13 @@ config BOOST_SUPPORT
 	help
 	  Enables support touch boost feature.
 
+
+config RECOVERY_KERNEL
+        bool "reset reboot-recovery flag on each reboot"
+        help
+          Build a kernel that, by default, resets reboot-recovery flag
+          and prevent us to be stuck on recovery (useful for custom recoveries)
+
 choice
 	prompt "Support dynamic CPU Hotplug"
 	depends on HOTPLUG_CPU

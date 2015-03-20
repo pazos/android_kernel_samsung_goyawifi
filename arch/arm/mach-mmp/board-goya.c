@@ -4358,13 +4358,12 @@ static int reboot_notifier_func(struct notifier_block *this,
 	unsigned char pmic_download_register = 0;
 	unsigned char pmic_register = 0;
 
-	pr_info("reboot notifier: %s\n", cmd);
 #if defined(CONFIG_MFD_88PM822)
-	/* need to write reset reason according to cmd */
 	data = pm822_extern_read(PM822_BASE_PAGE, PMIC_GENERAL_USE_REGISTER);
 	data &= ~(PMIC_GENERAL_USE_REBOOT_DN_MASK);
-
 	if (cmd) {
+                /* need to write reset reason according to cmd */
+                pr_info("reboot notifier: %s\n", cmd);
 		if (!strcmp(cmd, "recovery")) {
 			pr_info("Device will enter recovery mode on next booting\n");
 			data |= PMIC_GENERAL_USE_BOOT_BY_FULL_RESET;
@@ -4409,8 +4408,13 @@ static int reboot_notifier_func(struct notifier_block *this,
 		}
 
 	} else {
-		data |= PMIC_GENERAL_USE_BOOT_BY_INTENDED_RESET;
-		pm822_extern_write(PM822_BASE_PAGE, PMIC_GENERAL_USE_REGISTER, data);
+                #if !defined(CONFIG_RECOVERY_KERNEL)
+                data |= PMIC_GENERAL_USE_BOOT_BY_INTENDED_RESET;
+                pm822_extern_write(PM822_BASE_PAGE, PMIC_GENERAL_USE_REGISTER, data);
+                #else
+                data |= PMIC_GENERAL_USE_BOOT_BY_RECOVERY_DONE;
+                pm822_extern_write(PM822_BASE_PAGE, PMIC_GENERAL_USE_REGISTER, data);
+                #endif
 	}
 	if (code != SYS_POWER_OFF) {
 		pr_info("enable PMIC watchdog\n");
